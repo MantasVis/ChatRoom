@@ -1,4 +1,4 @@
 package com.chatroom.chat;
 
-public class Controller {
+public class ControllerMain {
 }
