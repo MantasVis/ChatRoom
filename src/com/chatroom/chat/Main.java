@@ -10,9 +10,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/chatroom.fxml"));
+        primaryStage.setTitle("Chatroom");
+        primaryStage.setScene(new Scene(root, 723, 520));
         primaryStage.show();
     }
 
@@ -21,3 +21,7 @@ public class Main extends Application {
         launch(args);
     }
 }
+
+//todo: Add validation to username input
+//todo: Colour code text based on who sent it (user, server, notifications, etc.)
+//todo: Make socket ip configurable when launching the app
