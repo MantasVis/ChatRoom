@@ -1,6 +1,6 @@
 # About
 
-An instang messaging app that allows people to chat.
+The server for the instant messaging app.
 
 ## Features
 
@@ -8,13 +8,13 @@ An instang messaging app that allows people to chat.
 
 ### ToDo List
 
-- [ ] Functioning chat room
+- [x] Functioning chat room server
 - [ ] Colour coding for different messages (Users, server, notifications, etc.)
 - [ ] Add emojis
 
 ### Potential ToDos
 
-- [ ] Allow server admin to kick/ban people
+- [ ] Allow server to kick/ban people
 
 #### Technologies Used
 
