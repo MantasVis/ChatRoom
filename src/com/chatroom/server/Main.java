@@ -10,8 +10,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/chatroom.fxml"));
-        primaryStage.setTitle("Chatroom");
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/chatroomServer.fxml"));
+        primaryStage.setTitle("Instant messenger");
         primaryStage.setScene(new Scene(root, 723, 520));
         primaryStage.show();
     }
