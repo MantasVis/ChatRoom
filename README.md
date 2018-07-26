@@ -1,6 +1,6 @@
 # About
 
-A chat room app that allows people to chat through a LAN connection.
+An instang messaging app that allows people to chat.
 
 ## Features
 
