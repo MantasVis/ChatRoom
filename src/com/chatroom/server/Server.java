@@ -25,7 +25,7 @@ public class Server
         this.inputTextArea = inputTextArea;
     }
 
-    private void start()
+    public void start()
     {
         try
         {
