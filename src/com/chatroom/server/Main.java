@@ -1,4 +1,4 @@
-package com.chatroom.chat;
+package com.chatroom.server;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package com.chatroom.chat;
+package com.chatroom.server;
 
 public class User
 {
