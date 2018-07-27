@@ -49,6 +49,7 @@ public class ControllerMain implements Initializable {
         server = new Server(chatTextArea, inputTextArea);
         server.ableToType(false);
 
+
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(() -> server.start());
     }
