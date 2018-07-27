@@ -15,23 +15,11 @@ public class ControllerMain implements Initializable {
 
     //FXML Objects
     @FXML
-    private JFXTextField usernameField;
-    @FXML
     private TextArea onlineUserArea, chatTextArea, inputTextArea;
 
     Server server;
 
     //FXML Actions
-    @FXML
-    void connectButton(ActionEvent event) {
-
-    }
-
-    @FXML
-    void disconnectButton(ActionEvent event) {
-
-    }
-
     @FXML
     void sendButton(ActionEvent event)
     {
@@ -53,6 +41,7 @@ public class ControllerMain implements Initializable {
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(() -> server.start());
     }
+
 
 
 }

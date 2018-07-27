@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="ChatRoomServer.jnlp">
+  <information>
+    <title>ChatRoomServer</title>
+    <vendor>Unknown</vendor>
+    <description>ChatRoomServer</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="ChatRoomServer.jar" size="6952" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="600" height="400" main-class="com.chatroom.server.Main"  name="ChatRoomServer" />
+  <update check="background"/>
+</jnlp>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatroom.server.ControllerMain">
@@ -45,17 +44,9 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: yellow;" BorderPane.alignment="CENTER">
                <children>
-                  <Label layoutX="33.0" layoutY="14.0" text="Username:">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <JFXButton layoutX="421.0" layoutY="417.0" onAction="#sendButton" prefHeight="61.0" prefWidth="68.0" style="-fx-background-color: grey;" text="Send" />
                   <TextArea fx:id="chatTextArea" editable="false" layoutX="33.0" layoutY="55.0" prefHeight="344.0" prefWidth="456.0" wrapText="true" />
-                  <JFXTextField fx:id="usernameField" layoutX="114.0" layoutY="10.0" prefHeight="25.0" prefWidth="202.0" />
-                  <JFXButton layoutX="418.0" layoutY="11.0" onAction="#disconnectButton" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: grey;" text="Disconnect" />
-                  <JFXButton layoutX="332.0" layoutY="11.0" onAction="#connectButton" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: grey;" text="Connect" />
                   <TextArea fx:id="inputTextArea" layoutX="33.0" layoutY="416.0" prefHeight="62.0" prefWidth="364.0" />
+                  <Button layoutX="423.0" layoutY="417.0" mnemonicParsing="false" onAction="#sendButton" prefHeight="61.0" prefWidth="65.0" text="Send" />
                </children>
             </AnchorPane>
          </center>
