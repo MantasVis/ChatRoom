@@ -20,6 +20,5 @@ The server for the instant messaging app.
 
 * JAVA
 * JAVAFX
-* JAVA Sockets
 * CSS
 * HTML
