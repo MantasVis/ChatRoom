@@ -1,7 +1,6 @@
 package com.chatroom.server;
 
 import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.TextArea;
 
 import java.io.EOFException;
@@ -10,14 +9,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Server
+public final class Server
 {
-    private ObjectOutputStream output;
-    private ObjectInputStream input;
     private ServerSocket serverSocket;
     private Socket connection;
     private TextArea chatTextArea, inputTextArea;
+    private static ArrayList<SocketHandler> clients = new ArrayList<>();
 
     public Server(TextArea chatTextArea, TextArea inputTextArea)
     {
@@ -36,17 +36,12 @@ public class Server
                 try
                 {
                     waitForConnection();
-                    setupStreams();
-                    whileChatting();
                 }
                 catch (EOFException e)
                 {
                     showMessage("\nServer ended the connection!");
                 }
-                finally
-                {
-                    closeServer();
-                }
+
             }
         }
         catch (IOException e)
@@ -62,26 +57,30 @@ public class Server
     {
         showMessage("Waiting for someone to connect... \n");
         connection = serverSocket.accept();
+        SocketHandler socketHandler = new SocketHandler(connection, chatTextArea, inputTextArea);
+        socketHandler.start();
+
         showMessage("Now connected to " + connection.getInetAddress().getHostName());
     }
 
     /**
-     * Get stream to send and retrieve data
+     * Set up stream to send and retrieve data
      */
-    private void setupStreams() throws IOException
+   /* private void setUpStreams() throws IOException
     {
+
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
 
         input = new ObjectInputStream(connection.getInputStream());
 
         showMessage("\nStreams are now set up! \n");
-    }
+    }*/
 
     /**
      * Receives messages
      */
-    private void whileChatting() throws IOException
+    /*private void whileChatting() throws IOException
     {
         String message = "You are now connected!";
         sendMessage(message);
@@ -99,16 +98,16 @@ public class Server
                 showMessage("\nUser didn't send a string");
             }
         }
-        while (!message.equals("CLIENT - END"));
-    }
+        while (!message.equals("USER: END"));
+    }*/
 
     /**
      * Close streams and sockets before shutting down the server
      */
-    private void closeServer()
+    /*private void closeServer()
     {
         showMessage("\nClosing connections... \n");
-        ableToType(true);
+        ableToType(false);
 
         try
         {
@@ -120,22 +119,26 @@ public class Server
         {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Sends messages
      */
     public void sendMessage(String message)
     {
-        try
+        for (int i = 0; i < SocketHandler.activeCount(); i++)
         {
-            output.writeObject("SERVER: " + message);
-            output.flush();
-            showMessage("\nSERVER: " + message);
-        }
-        catch (IOException e)
-        {
-            chatTextArea.appendText("\nError sending message");
+            try
+            {
+                ObjectOutputStream output = clients.get(i).getOutput();
+                output.writeObject("SERVER: " + message);
+                output.flush();
+                showMessage("\nSERVER: " + message);
+            }
+            catch (IOException e)
+            {
+                chatTextArea.appendText("\nError sending message");
+            }
         }
     }
 
@@ -147,8 +150,15 @@ public class Server
         Platform.runLater(() -> chatTextArea.appendText(text));
     }
 
+    /**
+     * Allows and disallows typing
+     */
     public void ableToType(final boolean allowed)
     {
         Platform.runLater(() -> inputTextArea.setEditable(allowed));
+    }
+
+    public static ArrayList<SocketHandler> getClients() {
+        return clients;
     }
 }

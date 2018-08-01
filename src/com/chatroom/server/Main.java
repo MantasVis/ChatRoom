@@ -9,16 +9,34 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/fxml/chatroomServer.fxml"));
-        primaryStage.setTitle("Instant messenger");
-        primaryStage.setScene(new Scene(root, 723, 520));
-        primaryStage.show();
+    public void start(Stage primaryStage)
+    {
+        try
+        {
+            System.err.println("FXML RESOURCE: " + getClass().getResource("/chatroomServer.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatroomServer.fxml"));
+            //loader.setController(new ControllerMain());
+            Parent root = loader.load();
+            primaryStage.setTitle("Instant messenger server");
+            primaryStage.setScene(new Scene(root, 723, 520));
+            primaryStage.show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.out.println("Somethings fucking up...");
+        }
+    }
+
+    @Override
+    public void stop()
+    {
+        System.exit(0);
     }
 
 
     public static void main(String[] args) {
-        launch(args);
+            launch(args);
     }
 }
 
