@@ -126,20 +126,20 @@ public final class Server
      */
     public void sendMessage(String message)
     {
-        for (int i = 0; i < SocketHandler.activeCount(); i++)
+        for (int i = 0; i < clients.size(); i++)
         {
             try
             {
                 ObjectOutputStream output = clients.get(i).getOutput();
                 output.writeObject("SERVER: " + message);
                 output.flush();
-                showMessage("\nSERVER: " + message);
             }
             catch (IOException e)
             {
                 chatTextArea.appendText("\nError sending message");
             }
         }
+        showMessage("\nSERVER: " + message);
     }
 
     /**

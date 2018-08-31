@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+
+import static com.chatroom.server.Server.getClients;
 
 public class SocketHandler extends Thread
 {
@@ -51,7 +54,7 @@ public class SocketHandler extends Thread
 
         input = new ObjectInputStream(socket.getInputStream());
 
-        Server.getClients().add(this);
+        getClients().add(this);
 
 
         showMessage("\nStreams are now set up! \n");
@@ -65,12 +68,21 @@ public class SocketHandler extends Thread
         String message = "You are now connected!";
         //sendMessage(message);
         ableToType(true);
-
+        ArrayList<SocketHandler> clients = getClients();
+        ObjectOutputStream tempOutput;
         do
         {
             try
             {
                 message = (String) input.readObject();
+
+                for (int i = 0; i < clients.size(); i++)
+                {
+                    tempOutput = clients.get(i).getOutput();
+                    tempOutput.writeObject(message);
+                    tempOutput.flush();
+                }
+
                 showMessage("\n" + message);
             }
             catch (ClassNotFoundException e)
