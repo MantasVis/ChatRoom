@@ -34,7 +34,7 @@ public class ControllerMain implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        server = new Server(chatTextArea, inputTextArea);
+        server = new Server(onlineUserArea, chatTextArea, inputTextArea);
         server.ableToType(false);
 
 
