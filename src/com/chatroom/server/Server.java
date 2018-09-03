@@ -16,11 +16,12 @@ public final class Server
 {
     private ServerSocket serverSocket;
     private Socket connection;
-    private TextArea chatTextArea, inputTextArea;
+    private TextArea chatTextArea, inputTextArea, onlineUserArea;
     private static ArrayList<SocketHandler> clients = new ArrayList<>();
 
-    public Server(TextArea chatTextArea, TextArea inputTextArea)
+    public Server(TextArea onlineUserArea, TextArea chatTextArea, TextArea inputTextArea)
     {
+        this.onlineUserArea = onlineUserArea;
         this.chatTextArea = chatTextArea;
         this.inputTextArea = inputTextArea;
     }
@@ -55,71 +56,12 @@ public final class Server
      */
     private void waitForConnection() throws IOException
     {
-        showMessage("Waiting for someone to connect... \n");
         connection = serverSocket.accept();
-        SocketHandler socketHandler = new SocketHandler(connection, chatTextArea, inputTextArea);
+        SocketHandler socketHandler = new SocketHandler(connection, chatTextArea, inputTextArea, onlineUserArea, "");
         socketHandler.start();
 
-        showMessage("Now connected to " + connection.getInetAddress().getHostName());
+        showMessage("Now connected to " + connection.getInetAddress().getHostName() + "\n");
     }
-
-    /**
-     * Set up stream to send and retrieve data
-     */
-   /* private void setUpStreams() throws IOException
-    {
-
-        output = new ObjectOutputStream(connection.getOutputStream());
-        output.flush();
-
-        input = new ObjectInputStream(connection.getInputStream());
-
-        showMessage("\nStreams are now set up! \n");
-    }*/
-
-    /**
-     * Receives messages
-     */
-    /*private void whileChatting() throws IOException
-    {
-        String message = "You are now connected!";
-        sendMessage(message);
-        ableToType(true);
-
-        do
-        {
-            try
-            {
-                message = (String) input.readObject();
-                showMessage("\n" + message);
-            }
-            catch (ClassNotFoundException e)
-            {
-                showMessage("\nUser didn't send a string");
-            }
-        }
-        while (!message.equals("USER: END"));
-    }*/
-
-    /**
-     * Close streams and sockets before shutting down the server
-     */
-    /*private void closeServer()
-    {
-        showMessage("\nClosing connections... \n");
-        ableToType(false);
-
-        try
-        {
-            output.close();
-            input.close();
-            connection.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }*/
 
     /**
      * Sends messages

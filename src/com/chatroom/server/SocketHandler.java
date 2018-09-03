@@ -16,13 +16,16 @@ public class SocketHandler extends Thread
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private TextArea chatTextArea, inputTextArea;
+    private TextArea chatTextArea, inputTextArea, onlineUsersArea;
+    private String username;
 
-    public SocketHandler(Socket socket, TextArea chatTextArea, TextArea inputTextArea)
+    public SocketHandler(Socket socket, TextArea chatTextArea, TextArea inputTextArea, TextArea onlineUsersArea, String username)
     {
         this.socket = socket;
         this.chatTextArea = chatTextArea;
         this.inputTextArea = inputTextArea;
+        this.onlineUsersArea = onlineUsersArea;
+        this.username = "";
     }
 
     public void run()
@@ -38,7 +41,7 @@ public class SocketHandler extends Thread
         }
         finally
         {
-            closeConnection();
+            //closeConnection();
         }
 
     }
@@ -55,9 +58,6 @@ public class SocketHandler extends Thread
         input = new ObjectInputStream(socket.getInputStream());
 
         getClients().add(this);
-
-
-        showMessage("\nStreams are now set up! \n");
     }
 
     /**
@@ -65,38 +65,84 @@ public class SocketHandler extends Thread
      */
     private void whileChatting() throws IOException
     {
-        String message = "You are now connected!";
-        //sendMessage(message);
-        ableToType(true);
-        ArrayList<SocketHandler> clients = getClients();
+        String message = "";
         ObjectOutputStream tempOutput;
+        ArrayList<SocketHandler> clients = getClients();
+        ableToType(true);
+
         do
         {
             try
             {
                 message = (String) input.readObject();
 
-                for (int i = 0; i < clients.size(); i++)
+                if (message.startsWith("Œ"))
                 {
-                    tempOutput = clients.get(i).getOutput();
-                    tempOutput.writeObject(message);
-                    tempOutput.flush();
+                    processCommand(message);
                 }
+                else
+                {
+                    for (int i = 0; i < clients.size(); i++)
+                    {
+                        tempOutput = clients.get(i).getOutput();
+                        tempOutput.writeObject(message);
+                        tempOutput.flush();
+                    }
 
-                showMessage("\n" + message);
+                    showMessage("\n" + message);
+                }
             }
             catch (ClassNotFoundException e)
             {
                 showMessage("\nUser didn't send a string");
             }
         }
-        while (!message.equals("USER: END"));
+        while (!message.contains("LOLOLOLOASDAD"));
+
+        for (int i = 0; i < clients.size(); i++)
+        {
+            tempOutput = clients.get(i).getOutput();
+            tempOutput.writeObject(username + " has disconnected");
+            tempOutput.flush();
+        }
+        updateUsers();
     }
+
+    private void processCommand(String command) throws IOException
+    {
+        ArrayList<SocketHandler> clients = getClients();
+        ObjectOutputStream tempOutput;
+
+        if (command.contains("START_CONNECTION"))
+        {
+            username = command.split(";")[1];
+
+            for (int i = 0; i < clients.size(); i++)
+            {
+                tempOutput = clients.get(i).getOutput();
+                tempOutput.writeObject(username + " has connected");
+                tempOutput.flush();
+            }
+            updateUsers();
+            showMessage(username + " has connected");
+        }
+        else if (command.contains("END_CONNECTION"))
+        {
+            for (int i = 0; i < clients.size(); i++)
+            {
+                tempOutput = clients.get(i).getOutput();
+                tempOutput.writeObject(username + " has disconnected");
+                tempOutput.flush();
+            }
+            showMessage("\n" + username + " has disconnected");
+            updateUsers();
+            clients.remove(this);
+            closeConnection();
+        }
+    }
+
     private void closeConnection()
     {
-        showMessage("\nClosing connections... \n");
-        ableToType(false);
-
         try
         {
             output.close();
@@ -114,12 +160,43 @@ public class SocketHandler extends Thread
         return output;
     }
 
+    public String getUsername()
+    {
+        return username;
+    }
+
     /**
      * Updates the chat window
      */
     private void showMessage(final String text)
     {
         Platform.runLater(() -> chatTextArea.appendText(text));
+    }
+
+    /**
+     * Updates user list
+     */
+    private void updateUsers() throws IOException
+    {
+        Platform.runLater(() -> onlineUsersArea.clear());
+        ArrayList<SocketHandler> clients = getClients();
+        ObjectOutputStream tempOutput;
+        String users = "";
+
+        for (int i = 0; i < getClients().size(); i++)
+        {
+            int finalI = i;
+            Platform.runLater(() -> onlineUsersArea.appendText(getClients().get(finalI).getUsername() + "\n"));
+            users = users + getClients().get(finalI).getUsername() + "\n";
+        }
+
+        for (int i = 0; i < clients.size(); i++)
+        {
+            tempOutput = clients.get(i).getOutput();
+            tempOutput.writeObject("Œ" + "USER_LIST:" + users);
+            tempOutput.flush();
+        }
+
     }
 
     /**
