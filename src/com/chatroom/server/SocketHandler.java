@@ -131,13 +131,13 @@ public class SocketHandler extends Thread
             for (int i = 0; i < clients.size(); i++)
             {
                 tempOutput = clients.get(i).getOutput();
-                tempOutput.writeObject(username + " has disconnected");
+                tempOutput.writeObject(username + " has disconnected\n");
                 tempOutput.flush();
             }
             showMessage("\n" + username + " has disconnected");
-            updateUsers();
             clients.remove(this);
             closeConnection();
+            updateUsers();
         }
     }
 
