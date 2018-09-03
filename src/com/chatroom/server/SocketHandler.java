@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 import static com.chatroom.server.Server.getClients;
@@ -96,6 +97,10 @@ public class SocketHandler extends Thread
             {
                 showMessage("\nUser didn't send a string");
             }
+            catch (SocketException e)
+            {
+
+            }
         }
         while (!message.contains("LOLOLOLOASDAD"));
 
@@ -124,7 +129,7 @@ public class SocketHandler extends Thread
                 tempOutput.flush();
             }
             updateUsers();
-            showMessage(username + " has connected");
+            showMessage(username + " has connected\n");
         }
         else if (command.contains("END_CONNECTION"))
         {
@@ -134,7 +139,7 @@ public class SocketHandler extends Thread
                 tempOutput.writeObject(username + " has disconnected\n");
                 tempOutput.flush();
             }
-            showMessage("\n" + username + " has disconnected");
+            showMessage(username + " has disconnected\n");
             clients.remove(this);
             closeConnection();
             updateUsers();
