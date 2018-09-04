@@ -2,6 +2,8 @@ package com.chatroom.server;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,15 +19,16 @@ public class SocketHandler extends Thread
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private TextArea chatTextArea, inputTextArea, onlineUsersArea;
+    private TextArea inputTextArea;
+    private TextFlow onlineUserArea, chatTextArea;
     private String username;
 
-    public SocketHandler(Socket socket, TextArea chatTextArea, TextArea inputTextArea, TextArea onlineUsersArea, String username)
+    public SocketHandler(Socket socket, TextFlow chatTextArea, TextArea inputTextArea, TextFlow onlineUsersArea, String username)
     {
         this.socket = socket;
         this.chatTextArea = chatTextArea;
         this.inputTextArea = inputTextArea;
-        this.onlineUsersArea = onlineUsersArea;
+        this.onlineUserArea = onlineUsersArea;
         this.username = "";
     }
 
@@ -89,7 +92,7 @@ public class SocketHandler extends Thread
                         tempOutput.writeObject(message);
                         tempOutput.flush();
                     }
-
+                    chatTextArea.setStyle("-fx-text-fill: RED");
                     showMessage(message + "\n");
                 }
             }
@@ -180,7 +183,8 @@ public class SocketHandler extends Thread
      */
     private void showMessage(final String text)
     {
-        Platform.runLater(() -> chatTextArea.appendText(text));
+        Text t1 = new Text(text);
+        Platform.runLater(() -> chatTextArea.getChildren().add(t1));
     }
 
     /**
@@ -188,7 +192,7 @@ public class SocketHandler extends Thread
      */
     private void updateUsers() throws IOException
     {
-        Platform.runLater(() -> onlineUsersArea.clear());
+        Platform.runLater(() -> onlineUserArea.getChildren().clear());
         ArrayList<SocketHandler> clients = getClients();
         ObjectOutputStream tempOutput;
         String users = "";
@@ -196,7 +200,8 @@ public class SocketHandler extends Thread
         for (int i = 0; i < getClients().size(); i++)
         {
             int finalI = i;
-            Platform.runLater(() -> onlineUsersArea.appendText(getClients().get(finalI).getUsername() + "\n"));
+            Text t1 = new Text(getClients().get(finalI).getUsername() + "\n");
+            Platform.runLater(() -> onlineUserArea.getChildren().add(t1));
             users = users + getClients().get(finalI).getUsername() + "\n";
         }
 

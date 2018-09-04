@@ -2,6 +2,8 @@ package com.chatroom.server;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -16,10 +18,11 @@ public final class Server
 {
     private ServerSocket serverSocket;
     private Socket connection;
-    private TextArea chatTextArea, inputTextArea, onlineUserArea;
+    private TextArea inputTextArea;
+    private TextFlow onlineUserArea, chatTextArea;
     private static ArrayList<SocketHandler> clients = new ArrayList<>();
 
-    public Server(TextArea onlineUserArea, TextArea chatTextArea, TextArea inputTextArea)
+    public Server(TextFlow onlineUserArea, TextFlow chatTextArea, TextArea inputTextArea)
     {
         this.onlineUserArea = onlineUserArea;
         this.chatTextArea = chatTextArea;
@@ -78,7 +81,8 @@ public final class Server
             }
             catch (IOException e)
             {
-                chatTextArea.appendText("Error sending message\n");
+                Text t1 = new Text("Error sending message\n");
+                chatTextArea.getChildren().add(t1);
             }
         }
         showMessage("SERVER: " + message + "\n");
@@ -89,7 +93,8 @@ public final class Server
      */
     private void showMessage(final String text)
     {
-        Platform.runLater(() -> chatTextArea.appendText(text));
+        Text t1 = new Text(text);
+        Platform.runLater(() -> chatTextArea.getChildren().add(t1));
     }
 
     /**

@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.TextFlow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +18,9 @@ public class ControllerMain implements Initializable {
 
     //FXML Objects
     @FXML
-    private TextArea onlineUserArea, chatTextArea, inputTextArea;
+    private TextArea inputTextArea;
+    @FXML
+    private TextFlow onlineUserArea, chatTextArea;
 
     Server server;
 

@@ -5,13 +5,14 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="723.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatroom.server.ControllerMain">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chatroom.server.ControllerMain">
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
@@ -36,22 +37,23 @@
             </MenuBar>
          </top>
          <right>
-            <AnchorPane prefHeight="495.0" prefWidth="207.0" style="-fx-background-color: cyan;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="495.0" prefWidth="201.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label layoutX="64.0" layoutY="14.0" text="Online Users">
+                  <Label layoutX="50.0" layoutY="14.0" text="Online Users">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <TextArea fx:id="onlineUserArea" editable="false" layoutX="15.0" layoutY="55.0" prefHeight="419.0" prefWidth="178.0" />
+                  <TextArea fx:id="onlineUserArea" editable="false" layoutX="2.0" layoutY="53.0" prefHeight="419.0" prefWidth="178.0" AnchorPane.rightAnchor="27.0" />
                </children>
             </AnchorPane>
          </right>
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: yellow;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
                   <TextArea fx:id="chatTextArea" editable="false" layoutX="33.0" layoutY="55.0" prefHeight="344.0" prefWidth="456.0" wrapText="true" />
                   <TextArea fx:id="inputTextArea" layoutX="33.0" layoutY="416.0" onKeyPressed="#enterKey" prefHeight="62.0" prefWidth="364.0" />
                   <Button layoutX="423.0" layoutY="417.0" mnemonicParsing="false" onAction="#sendButton" prefHeight="61.0" prefWidth="65.0" text="Send" />
+                  <Separator layoutX="516.0" orientation="VERTICAL" prefHeight="505.0" prefWidth="1.0" />
                </children>
             </AnchorPane>
          </center>

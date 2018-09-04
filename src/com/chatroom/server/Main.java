@@ -13,18 +13,19 @@ public class Main extends Application {
     {
         try
         {
-            //System.err.println("FXML RESOURCE: " + getClass().getResource("/chatroomServer.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatroomServer.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatroomServer2.fxml"));
             Parent root = loader.load();
             primaryStage.setTitle("Instant messenger server");
-            primaryStage.setScene(new Scene(root, 723, 520));
+            Scene scene = new Scene(root, 740, 520);
+            scene.getStylesheets().add("/redLounge.css");
+            primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            System.out.println("Somethings fucking up...");
+            System.out.println("Critical error, this shouldn't be happening...");
         }
     }
 
