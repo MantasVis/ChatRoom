@@ -90,7 +90,7 @@ public class SocketHandler extends Thread
                         tempOutput.flush();
                     }
 
-                    showMessage("\n" + message);
+                    showMessage(message + "\n");
                 }
             }
             catch (ClassNotFoundException e)
@@ -136,13 +136,18 @@ public class SocketHandler extends Thread
             for (int i = 0; i < clients.size(); i++)
             {
                 tempOutput = clients.get(i).getOutput();
-                tempOutput.writeObject(username + " has disconnected\n");
+                tempOutput.writeObject(username + " has disconnected");
                 tempOutput.flush();
             }
             showMessage(username + " has disconnected\n");
             clients.remove(this);
             closeConnection();
             updateUsers();
+
+            if (clients.size() == 0)
+            {
+                ableToType(false);
+            }
         }
     }
 
