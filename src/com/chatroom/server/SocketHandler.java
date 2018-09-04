@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 import static com.chatroom.server.Server.getClients;
@@ -89,12 +90,16 @@ public class SocketHandler extends Thread
                         tempOutput.flush();
                     }
 
-                    showMessage("\n" + message);
+                    showMessage(message + "\n");
                 }
             }
             catch (ClassNotFoundException e)
             {
                 showMessage("\nUser didn't send a string");
+            }
+            catch (SocketException e)
+            {
+
             }
         }
         while (!message.contains("LOLOLOLOASDAD"));
@@ -124,20 +129,25 @@ public class SocketHandler extends Thread
                 tempOutput.flush();
             }
             updateUsers();
-            showMessage(username + " has connected");
+            showMessage(username + " has connected\n");
         }
         else if (command.contains("END_CONNECTION"))
         {
             for (int i = 0; i < clients.size(); i++)
             {
                 tempOutput = clients.get(i).getOutput();
-                tempOutput.writeObject(username + " has disconnected\n");
+                tempOutput.writeObject(username + " has disconnected");
                 tempOutput.flush();
             }
-            showMessage("\n" + username + " has disconnected");
+            showMessage(username + " has disconnected\n");
             clients.remove(this);
             closeConnection();
             updateUsers();
+
+            if (clients.size() == 0)
+            {
+                ableToType(false);
+            }
         }
     }
 

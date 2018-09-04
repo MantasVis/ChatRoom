@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,11 +26,17 @@ public class ControllerMain implements Initializable {
     void sendButton(ActionEvent event)
     {
         String message = inputTextArea.getText();
-        if (!message.equals(""))
+        sendMessage(message);
+    }
+
+    @FXML
+    void enterKey(KeyEvent event)
+    {
+        if (event.getCode().equals(KeyCode.ENTER))
         {
-            server.sendMessage(message);
+            String message = inputTextArea.getText();
+            sendMessage(message);
         }
-        inputTextArea.clear();
     }
 
     @Override
@@ -42,6 +50,13 @@ public class ControllerMain implements Initializable {
         service.submit(() -> server.start());
     }
 
-
+    public void sendMessage(String message)
+    {
+        if (!message.equals(""))
+        {
+            server.sendMessage(message);
+        }
+        inputTextArea.clear();
+    }
 
 }

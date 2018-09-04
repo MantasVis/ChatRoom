@@ -78,10 +78,10 @@ public final class Server
             }
             catch (IOException e)
             {
-                chatTextArea.appendText("\nError sending message");
+                chatTextArea.appendText("Error sending message\n");
             }
         }
-        showMessage("\nSERVER: " + message);
+        showMessage("SERVER: " + message + "\n");
     }
 
     /**

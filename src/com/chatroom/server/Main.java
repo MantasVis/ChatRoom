@@ -13,12 +13,12 @@ public class Main extends Application {
     {
         try
         {
-            System.err.println("FXML RESOURCE: " + getClass().getResource("/chatroomServer.fxml"));
+            //System.err.println("FXML RESOURCE: " + getClass().getResource("/chatroomServer.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatroomServer.fxml"));
-            //loader.setController(new ControllerMain());
             Parent root = loader.load();
             primaryStage.setTitle("Instant messenger server");
             primaryStage.setScene(new Scene(root, 723, 520));
+            primaryStage.setResizable(false);
             primaryStage.show();
         }
         catch (Exception e)
@@ -40,6 +40,9 @@ public class Main extends Application {
     }
 }
 
-//todo: Add validation to username input
 //todo: Colour code text based on who sent it (user, server, notifications, etc.)
-//todo: Make socket ip configurable when launching the app
+//todo: Work on GUI
+//todo: Get a custom CSS going
+
+//KNOWN BUGS
+//todo: Enter key creates a line break instead of being cleared
