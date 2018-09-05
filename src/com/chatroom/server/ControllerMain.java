@@ -1,6 +1,5 @@
 package com.chatroom.server;
 
-import com.jfoenix.controls.JFXTextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,8 +21,6 @@ public class ControllerMain implements Initializable {
     @FXML
     private TextFlow onlineUserArea, chatTextArea;
 
-    Server server;
-
     //FXML Actions
     @FXML
     void sendButton(ActionEvent event)
@@ -41,6 +38,8 @@ public class ControllerMain implements Initializable {
             sendMessage(message);
         }
     }
+
+    Server server;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)

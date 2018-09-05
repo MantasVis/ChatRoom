@@ -1,10 +1,5 @@
 package com.chatroom.server;
 
-import javafx.application.Platform;
-import javafx.scene.control.TextArea;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,24 +7,18 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-import static com.chatroom.server.Server.getClients;
-
 public class SocketHandler extends Thread
 {
     private Socket socket;
     private ObjectOutputStream output;
     private ObjectInputStream input;
-    private TextArea inputTextArea;
-    private TextFlow onlineUserArea, chatTextArea;
     private String username;
+    private Server server;
 
-    public SocketHandler(Socket socket, TextFlow chatTextArea, TextArea inputTextArea, TextFlow onlineUsersArea, String username)
+    public SocketHandler(Socket socket, Server server)
     {
         this.socket = socket;
-        this.chatTextArea = chatTextArea;
-        this.inputTextArea = inputTextArea;
-        this.onlineUserArea = onlineUsersArea;
-        this.username = "";
+        this.server = server;
     }
 
     public void run()
@@ -61,7 +50,7 @@ public class SocketHandler extends Thread
 
         input = new ObjectInputStream(socket.getInputStream());
 
-        getClients().add(this);
+        server.getClients().add(this);
     }
 
     /**
@@ -71,8 +60,8 @@ public class SocketHandler extends Thread
     {
         String message = "";
         ObjectOutputStream tempOutput;
-        ArrayList<SocketHandler> clients = getClients();
-        ableToType(true);
+        ArrayList<SocketHandler> clients = server.getClients();
+        server.ableToType(true);
 
         do
         {
@@ -92,13 +81,12 @@ public class SocketHandler extends Thread
                         tempOutput.writeObject(message);
                         tempOutput.flush();
                     }
-                    chatTextArea.setStyle("-fx-text-fill: RED");
-                    showMessage(message + "\n");
+                    server.showMessage(message + "\n", MessageType.Message);
                 }
             }
             catch (ClassNotFoundException e)
             {
-                showMessage("\nUser didn't send a string");
+                server.showMessage("\nUser didn't send a string", MessageType.Error);
             }
             catch (SocketException e)
             {
@@ -113,12 +101,12 @@ public class SocketHandler extends Thread
             tempOutput.writeObject(username + " has disconnected");
             tempOutput.flush();
         }
-        updateUsers();
+        server.updateUsers();
     }
 
     private void processCommand(String command) throws IOException
     {
-        ArrayList<SocketHandler> clients = getClients();
+        ArrayList<SocketHandler> clients = server.getClients();
         ObjectOutputStream tempOutput;
 
         if (command.contains("START_CONNECTION"))
@@ -131,8 +119,8 @@ public class SocketHandler extends Thread
                 tempOutput.writeObject(username + " has connected");
                 tempOutput.flush();
             }
-            updateUsers();
-            showMessage(username + " has connected\n");
+            server.updateUsers();
+            server.showMessage(username + " has connected\n", MessageType.Connection);
         }
         else if (command.contains("END_CONNECTION"))
         {
@@ -142,14 +130,14 @@ public class SocketHandler extends Thread
                 tempOutput.writeObject(username + " has disconnected");
                 tempOutput.flush();
             }
-            showMessage(username + " has disconnected\n");
+            server.showMessage(username + " has disconnected\n", MessageType.Connection);
             clients.remove(this);
             closeConnection();
-            updateUsers();
+            server.updateUsers();
 
             if (clients.size() == 0)
             {
-                ableToType(false);
+                server.ableToType(false);
             }
         }
     }
@@ -176,49 +164,5 @@ public class SocketHandler extends Thread
     public String getUsername()
     {
         return username;
-    }
-
-    /**
-     * Updates the chat window
-     */
-    private void showMessage(final String text)
-    {
-        Text t1 = new Text(text);
-        Platform.runLater(() -> chatTextArea.getChildren().add(t1));
-    }
-
-    /**
-     * Updates user list
-     */
-    private void updateUsers() throws IOException
-    {
-        Platform.runLater(() -> onlineUserArea.getChildren().clear());
-        ArrayList<SocketHandler> clients = getClients();
-        ObjectOutputStream tempOutput;
-        String users = "";
-
-        for (int i = 0; i < getClients().size(); i++)
-        {
-            int finalI = i;
-            Text t1 = new Text(getClients().get(finalI).getUsername() + "\n");
-            Platform.runLater(() -> onlineUserArea.getChildren().add(t1));
-            users = users + getClients().get(finalI).getUsername() + "\n";
-        }
-
-        for (int i = 0; i < clients.size(); i++)
-        {
-            tempOutput = clients.get(i).getOutput();
-            tempOutput.writeObject("Œ" + "USER_LIST:" + users);
-            tempOutput.flush();
-        }
-
-    }
-
-    /**
-     * Allows and disallows typing
-     */
-    public void ableToType(final boolean allowed)
-    {
-        Platform.runLater(() -> inputTextArea.setEditable(allowed));
     }
 }

@@ -44,6 +44,8 @@ public class Main extends Application {
 //todo: Colour code text based on who sent it (user, server, notifications, etc.)
 //todo: Work on GUI
 //todo: Get a custom CSS going
+//todo: Allow the server to terminate the connection
+//todo: Change commands from strings to enums
 
 //KNOWN BUGS
 //todo: Enter key creates a line break instead of being cleared

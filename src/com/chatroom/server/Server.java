@@ -2,17 +2,16 @@ package com.chatroom.server;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
 public final class Server
 {
@@ -20,7 +19,7 @@ public final class Server
     private Socket connection;
     private TextArea inputTextArea;
     private TextFlow onlineUserArea, chatTextArea;
-    private static ArrayList<SocketHandler> clients = new ArrayList<>();
+    private ArrayList<SocketHandler> clients = new ArrayList<>();
 
     public Server(TextFlow onlineUserArea, TextFlow chatTextArea, TextArea inputTextArea)
     {
@@ -29,6 +28,9 @@ public final class Server
         this.inputTextArea = inputTextArea;
     }
 
+    /**
+     * Runs the server
+     */
     public void start()
     {
         try
@@ -43,7 +45,7 @@ public final class Server
                 }
                 catch (EOFException e)
                 {
-                    showMessage("\nServer ended the connection!");
+                    showMessage("\nServer ended the connection!", MessageType.Error);
                 }
 
             }
@@ -60,10 +62,10 @@ public final class Server
     private void waitForConnection() throws IOException
     {
         connection = serverSocket.accept();
-        SocketHandler socketHandler = new SocketHandler(connection, chatTextArea, inputTextArea, onlineUserArea, "");
+        SocketHandler socketHandler = new SocketHandler(connection, this);
         socketHandler.start();
 
-        showMessage("Now connected to " + connection.getInetAddress().getHostName() + "\n");
+        showMessage("Now connected to " + connection.getInetAddress().getHostName() + "\n", MessageType.Connection);
     }
 
     /**
@@ -85,16 +87,60 @@ public final class Server
                 chatTextArea.getChildren().add(t1);
             }
         }
-        showMessage("SERVER: " + message + "\n");
+        showMessage("SERVER: " + message + "\n", MessageType.Message);
     }
 
     /**
-     * Updates the chat window
+     * Updates the chat window with text
      */
-    private void showMessage(final String text)
+    public void showMessage(final String text, MessageType messageType)
     {
         Text t1 = new Text(text);
+
+        switch (messageType)
+        {
+            case Message:
+                t1.setFill(Color.WHITE);
+                break;
+
+            case Error:
+                t1.setFill(Color.RED);
+                break;
+
+            case Connection:
+                t1.setFill(Color.CYAN);
+                break;
+
+            default:
+                t1.setFill(Color.YELLOW);
+                break;
+        }
         Platform.runLater(() -> chatTextArea.getChildren().add(t1));
+    }
+
+    /**
+     * Updates online user list
+     */
+    public void updateUsers() throws IOException
+    {
+        Platform.runLater(() -> onlineUserArea.getChildren().clear());
+        ObjectOutputStream tempOutput;
+        String users = "";
+
+        for (int i = 0; i < clients.size(); i++)
+        {
+            Text t1 = new Text(clients.get(i).getUsername() + "\n");
+            t1.setFill(Color.WHITE);
+            Platform.runLater(() -> onlineUserArea.getChildren().add(t1));
+            users = users + clients.get(i).getUsername() + "\n";
+        }
+
+        for (int i = 0; i < clients.size(); i++)
+        {
+            tempOutput = clients.get(i).getOutput();
+            tempOutput.writeObject("Œ" + "USER_LIST:" + users);
+            tempOutput.flush();
+        }
     }
 
     /**
@@ -105,7 +151,7 @@ public final class Server
         Platform.runLater(() -> inputTextArea.setEditable(allowed));
     }
 
-    public static ArrayList<SocketHandler> getClients() {
+    public  ArrayList<SocketHandler> getClients() {
         return clients;
     }
 }
