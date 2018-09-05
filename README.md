@@ -4,7 +4,7 @@ The server for the instant messaging app. This is where the clients can connect 
 
 ## Features
 
-* Chat with other people on the LAN.
+* Chat with other people over LAN.
 
 ### ToDo List
 
