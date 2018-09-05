@@ -1,6 +1,6 @@
 # About
 
-The server for the instant messaging app.
+The server for the instant messaging app. This is where the clients can connect to begin chatting. If you're looking for the client app click [here](https://mantasvis.github.io/ChatRoomClient/)
 
 ## Features
 
