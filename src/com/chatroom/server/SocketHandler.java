@@ -44,7 +44,6 @@ public class SocketHandler extends Thread
      */
     private void setUpStreams() throws IOException
     {
-
         output = new ObjectOutputStream(socket.getOutputStream());
         output.flush();
 

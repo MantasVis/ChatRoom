@@ -1,8 +1,11 @@
 package com.chatroom.server;
 
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,6 +23,8 @@ public class ControllerMain implements Initializable {
     private TextArea inputTextArea;
     @FXML
     private TextFlow onlineUserArea, chatTextArea;
+    @FXML
+    private ScrollPane chatScrollPane;
 
     //FXML Actions
     @FXML
@@ -34,6 +39,7 @@ public class ControllerMain implements Initializable {
     {
         if (event.getCode().equals(KeyCode.ENTER))
         {
+            event.consume();
             String message = inputTextArea.getText();
             sendMessage(message);
         }
@@ -44,9 +50,18 @@ public class ControllerMain implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
+
+
+        chatTextArea.getChildren().addListener(
+                (ListChangeListener<Node>) ((change) -> {
+            chatTextArea.layout();
+            chatScrollPane.layout();
+            chatScrollPane.setVvalue(1.0f);
+        }));
+
+        inputTextArea.setWrapText(true);
         server = new Server(onlineUserArea, chatTextArea, inputTextArea);
         server.ableToType(false);
-
 
         ExecutorService service = Executors.newCachedThreadPool();
         service.submit(() -> server.start());

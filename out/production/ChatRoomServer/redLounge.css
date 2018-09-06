@@ -1,10 +1,16 @@
+*{
+	-backgroundColour: #0e0f11;
+	-fieldColour: #26282d;
+	-accentColour: #DA1106;
+}
+
 /*****************************************************************************************
 *													                                   	*
 *									AnchorPane Styling                                  *
 *									  			                                        *
 *****************************************************************************************/
 .root{
- 	-fx-background-color: #0e0f11;
+ 	-fx-background-color: -backgroundColour;
 }
 
 /****************************************************************************************
@@ -14,7 +20,7 @@
 *****************************************************************************************/
 
 .button{
- 	-fx-background-color: #DA1106;
+ 	-fx-background-color: -accentColour;
 }
 
 /****************************************************************************************
@@ -22,31 +28,32 @@
 *								      Separator Styling									*
 *																						*
 *****************************************************************************************/
-.separator:vertical, .separator *.line{
-	
-    -fx-border-color: #DA1106;
-    -fx-border-width: 0.5px;
+.separator:vertical, .separator:vertical *.line{
+	-fx-border-style: solid;
+    -fx-border-color: -accentColour;
+  	-fx-padding: 0 -50 0 0;
 }
 
 /****************************************************************************************
 *																						*
-*								      TextArea Styling									*
+*							    TextArea, TextFlow Styling	 							*
 *																						*
 *****************************************************************************************/
-.text-area .content{
-	-fx-background-color: #26282d;
-	-fx-border-color: #DA1106;
-	-fx-border-width: 0.4px;
-}
-
 .text-area{
-	-fx-background-color: #DA1106;
+	-fx-background-color: -fieldColour;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-width: 0px;
+    -fx-border-color: -accentColour;
+    -fx-text-fill: WHITE;
 }
 
-TextFlow{
-	-fx-background-color: #26282d;
-	-fx-border-color: #DA1106;
-	-fx-padding: 2 5 2 5;
+.text-area .scroll-pane, .text-area .scroll-pane .viewport, .text-area .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+.TextFlow{
+	
 }
 
 /****************************************************************************************
@@ -55,7 +62,7 @@ TextFlow{
 *																						*
 *****************************************************************************************/
 .label{
-	-fx-text-fill: RED;
+	-fx-text-fill: -accentColour;
 }
 
 /****************************************************************************************
@@ -64,22 +71,86 @@ TextFlow{
 *																						*
 *****************************************************************************************/
 .menu-bar{
-	-fx-background-color: #26282d;
+	-fx-background-color: -fieldColour;
 }
 
 .menu-item{
-	-fx-background-color: #26282d;
+ 	-fx-background-color: -fieldColour;
 }
 
 .context-menu {
-  -fx-background-color: #26282d;
-  -fx-padding: 0 0 0 0;
+	-fx-background-color: -fieldColour;
+	-fx-padding: 0 0 0 0;
 }
 
 .menu-item:hover{
-  -fx-background-color: #DA1106;
+	-fx-background-color: -accentColour;
 }
 
 .menu:hover, .menu:showing{
-  -fx-background-color: #DA1106;
+	-fx-background-color: -accentColour;
+}
+
+/****************************************************************************************
+*																						*
+*								   ScrollPane Styling								    *
+*																						*
+*****************************************************************************************/
+.scroll-pane{
+	-fx-background-color: -fieldColour;
+	-fx-background-radius: 10px;
+	-fx-border-color: -accentColour;
+	-fx-border-radius: 10px;
+	-fx-padding: 2 5 2 5;
+}
+
+.scroll-pane .viewport{
+	-fx-background-color: TRANSPARENT;
+}
+
+.scroll-bar:vertical{
+	-fx-padding: 1 2 5 2;
+	-fx-background-color: TRANSPARENT;
+	-fx-border-color: TRANSPARENT;
+}
+
+.scroll-bar{
+	-fx-background-color: TRANSPARENT;
+	-fx-border-color: TRANSPARENT;
+}
+
+.scroll-bar:vertical > .track-background, .scroll-bar:horizontal > .track-background {
+    -fx-background-color: TRANSPARENT;
+    -fx-background-insets: 0.0;
+    -fx-border-color: TRANSPARENT;
+}
+
+.scroll-bar:vertical > .thumb, .scroll-bar:horizontal > .thumb {
+    -fx-background-color: -accentColour;
+    -fx-background-insets: 3;
+    -fx-background-radius: 3;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: -accentColour;
+    -fx-border-color: TRANSPARENT;
+
+}
+
+/* Up- and Down-Button Padding */
+.scroll-bar:vertical > .increment-button, .scroll-bar:vertical > .decrement-button {
+    -fx-padding: 3 2 3 1;
+    -fx-border-color: TRANSPARENT;
+    -fx-background-color: TRANSPARENT;
+}
+
+/* Down Arrow */
+.scroll-bar:vertical > .increment-button > .increment-arrow {
+    -fx-shape: "M298 426h428l-214 214z";
+}
+
+/* Up Arrow */
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+    -fx-shape: "M298 598l214-214 214 214h-428z";
 }
