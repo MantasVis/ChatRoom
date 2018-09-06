@@ -9,7 +9,7 @@ The server for the instant messaging app. This is where the clients can connect 
 ### ToDo List
 
 - [x] Functioning chat room server
-- [ ] Colour coding for different messages (Users, server, notifications, etc.)
+- [x] Colour coding for different messages (Users, server, notifications, etc.)
 - [ ] Add emojis
 
 ### Potential ToDos
